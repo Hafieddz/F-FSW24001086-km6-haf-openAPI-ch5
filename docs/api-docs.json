@@ -1,0 +1,198 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Car Management Restful API Docs",
+    "version": "v1",
+    "description": "API Documentation for Car Management Restful API",
+    "contact": {
+      "name": "Hafiedz",
+      "email": "hasmy41@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "description": "Car Management Restful API Server",
+      "url": "http://localhost:8000/api/v1/"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/cars": {
+      "get": {
+        "summary": "Get All Cars Data",
+        "description": "Get All Cars Data",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Car Name"
+                      },
+                      "rentPrice": {
+                        "type": "number",
+                        "description": "Rent Price Per Day"
+                      },
+                      "image": {
+                        "type": "string",
+                        "description": "Car Images Path"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Created Time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Updated Time"
+                      },
+                      "createdBy": {
+                        "type": "string",
+                        "description": "Creator Name/ID"
+                      },
+                      "updatedBy": {
+                        "type": "string",
+                        "description": "Editor Name/ID"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error",
+                      "description": "Status Name"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Failed to get data!",
+                      "description": "Error Message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new car",
+        "description": "Create a new car entry",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Car Name"
+                  },
+                  "rentPrice": {
+                    "type": "number",
+                    "description": "Car Rent Price Per Day"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Image file (format must be png,jpg,jpeg)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "status" : {
+                        "type": "string",
+                        "example" : "success"
+                      },
+                      "data" : {
+                        "type": "object",
+                        "properties": {
+                          "name" : {
+                            "type": "string",
+                            "example" : "Gallardo"
+                          }
+                        }
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Car Name"
+                      },
+                      "rentPrice": {
+                        "type": "number",
+                        "description": "Rent Price Per Day"
+                      },
+                      "image": {
+                        "type": "string",
+                        "description": "Car Images Path"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Created Time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Updated Time"
+                      },
+                      "createdBy": {
+                        "type": "string",
+                        "description": "Creator Name/ID"
+                      },
+                      "updatedBy": {
+                        "type": "string",
+                        "description": "Editor Name/ID"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
