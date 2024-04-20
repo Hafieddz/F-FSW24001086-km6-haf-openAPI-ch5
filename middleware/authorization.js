@@ -15,7 +15,7 @@ const authorization = async (req, res, next) => {
 
     const user = await User.findById(payload.id);
 
-    if (user === null) throw new Error("Akun tidak ada...");
+    if (user === null) throw new Error("Token tidak valid!");
 
     req.user = user;
 
