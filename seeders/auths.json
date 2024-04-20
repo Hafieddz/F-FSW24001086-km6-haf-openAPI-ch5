@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "66238b097344e44ca0276ab3",
+    "email": "superadmin@mail.com",
+    "password": "$2b$10$cMVQR1ViAj5fmLaiRt9JyuYc2cq/Isg93U0ZZ95NLIIfPHXr9dkFS",
+    "createdAt": "2024-04-20T09:28:37.393Z",
+    "userId": "66238b097344e44ca0276ab1"
+  },
+  {
+    "_id": "66238b177344e44ca0276ab8",
+    "email": "admin@mail.com",
+    "password": "$2b$10$Dn98SqTEFvUp0U6pptxJLuCbkch.69/Be2GAB6bibkU3fh6Gf8Vzi",
+    "createdAt": "2024-04-20T09:28:37.393Z",
+    "userId": "66238b177344e44ca0276ab6"
+  },
+  {
+    "_id": "66238b257344e44ca0276abd",
+    "email": "member@mail.com",
+    "password": "$2b$10$jE5s9gxDt8pd6xO0ZdS6POGmT739/KmUDVOxgIxCZ2LUAF6azeq0u",
+    "createdAt": "2024-04-20T09:28:37.393Z",
+    "userId": "66238b257344e44ca0276abb"
+  }
+]

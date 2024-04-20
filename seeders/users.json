@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "66238b097344e44ca0276ab1",
+    "name": "Super Admin",
+    "age": 22,
+    "address": "Indonesia",
+    "role": "Super Admin",
+    "createdAt": "2024-04-20T09:28:37.391Z"
+  },
+  {
+    "_id": "66238b177344e44ca0276ab6",
+    "name": "Admin",
+    "age": 25,
+    "address": "Singapore",
+    "role": "Admin",
+    "createdAt": "2024-04-20T09:28:37.391Z"
+  },
+  {
+    "_id": "66238b257344e44ca0276abb",
+    "name": "Member",
+    "age": 19,
+    "address": "Malaysia",
+    "role": "Member",
+    "createdAt": "2024-04-20T09:28:37.391Z"
+  }
+]
