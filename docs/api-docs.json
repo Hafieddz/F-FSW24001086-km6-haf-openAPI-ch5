@@ -9,6 +9,20 @@
       "email": "hasmy41@gmail.com"
     }
   },
+  "tags": [
+    {
+      "name": "Auths",
+      "description": "API untuk model auth"
+    },
+    {
+      "name": "Users",
+      "description": "API untuk model user"
+    },
+    {
+      "name": "Cars",
+      "description": "API untuk model car"
+    }
+  ],
   "servers": [
     {
       "description": "Car Management Restful API Server",
@@ -24,55 +38,91 @@
       }
     }
   },
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
   "paths": {
     "/cars": {
       "get": {
-        "summary": "Get All Cars Data",
-        "description": "Get All Cars Data",
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Melihat semua data car",
+        "description": "Melihat semua data car",
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string",
-                        "description": "Car Name"
-                      },
-                      "rentPrice": {
-                        "type": "number",
-                        "description": "Rent Price Per Day"
-                      },
-                      "image": {
-                        "type": "string",
-                        "description": "Car Images Path"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Created Time"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Updated Time"
-                      },
-                      "createdBy": {
-                        "type": "string",
-                        "description": "Creator Name/ID"
-                      },
-                      "updatedBy": {
-                        "type": "string",
-                        "description": "Editor Name/ID"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "totalData": {
+                      "type": "integer",
+                      "example": 2
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "rentPrice": {
+                                "type": "integer"
+                              },
+                              "image": {
+                                "type": "string"
+                              },
+                              "isAvailable": {
+                                "type": "boolean"
+                              },
+                              "createdAt": {
+                                "type": "string"
+                              },
+                              "createdBy": {
+                                "type": "object"
+                              }
+                            }
+                          },
+                          "example": [
+                            {
+                              "_id": "662389e68a6d00e8554c05cd",
+                              "name": "Innova",
+                              "rentPrice": 1000000,
+                              "image": "https://ik.imagekit.io/sw8zj3c6b/IMG-1713605091752_ylq8Zlrxc.png",
+                              "isAvailable": true,
+                              "createdAt": "2024-04-20T09:23:43.192Z",
+                              "createdBy": {
+                                "_id": "66238b097344e44ca0276ab1",
+                                "name": "Super Admin"
+                              }
+                            },
+                            {
+                              "_id": "662389f88a6d00e8554c05d0",
+                              "name": "Avanza",
+                              "rentPrice": 1000000,
+                              "image": "https://ik.imagekit.io/sw8zj3c6b/IMG-1713605109487_zElL7jf6R.png",
+                              "isAvailable": true,
+                              "createdAt": "2024-04-20T09:23:43.192Z",
+                              "createdBy": {
+                                "_id": "66238b097344e44ca0276ab1",
+                                "name": "Super Admin"
+                              }
+                            }
+                          ]
+                        }
                       }
                     }
                   }
@@ -81,7 +131,7 @@
             }
           },
           "400": {
-            "description": "Failed Response",
+            "description": "Missing Token",
             "content": {
               "application/json": {
                 "schema": {
@@ -89,12 +139,12 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error",
+                      "example": "failed",
                       "description": "Status Name"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Failed to get data!",
+                      "example": "Missing token",
                       "description": "Error Message"
                     }
                   }
@@ -105,8 +155,14 @@
         }
       },
       "post": {
-        "summary": "Create a new car",
-        "description": "Create a new car entry",
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Membuat data car baru",
+        "description": "Membuat data car baru",
         "requestBody": {
           "required": true,
           "content": {
@@ -142,16 +198,16 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "status" : {
+                      "status": {
                         "type": "string",
-                        "example" : "success"
+                        "example": "success"
                       },
-                      "data" : {
+                      "data": {
                         "type": "object",
                         "properties": {
-                          "name" : {
+                          "name": {
                             "type": "string",
-                            "example" : "Gallardo"
+                            "example": "Gallardo"
                           }
                         }
                       },
@@ -184,6 +240,885 @@
                       "updatedBy": {
                         "type": "string",
                         "description": "Editor Name/ID"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Melihat data car berdasarkan id",
+        "summary": "Melihat data car berdasarkan id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "662389e68a6d00e8554c05cd"
+            },
+            "description": "car id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "662389e68a6d00e8554c05cd"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Innova"
+                            },
+                            "rentPrice": {
+                              "type": "integer",
+                              "example": 2000000
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/sw8zj3c6b/IMG-1713605091752_ylq8Zlrxc.png"
+                            },
+                            "isAvailable": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2024-04-20T09:23:43.192Z"
+                            },
+                            "createdBy": {
+                              "type": "object",
+                              "example": "66238b097344e44ca0276ab1"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed Response (Invalid Id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Id yang diinput tidak valid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda tidak memiliki"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Update data car berdasarkan id",
+        "description": "Update data car berdasarkan id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "662389e68a6d00e8554c05cd"
+            },
+            "description": "car id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updatedCar": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "662389e68a6d00e8554c05cd"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Innova"
+                            },
+                            "rentPrice": {
+                              "type": "integer",
+                              "example": 500000
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/sw8zj3c6b/IMG-1713605091752_ylq8Zlrxc.png"
+                            },
+                            "isAvailable": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2024-04-20T09:23:43.192Z"
+                            },
+                            "createdBy": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "example": "66238b097344e44ca0276ab1"
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Super Admin"
+                                }
+                              }
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2024-04-20T16:47:54.049Z"
+                            },
+                            "updatedBy": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "example": "66238b097344e44ca0276ab1"
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Super Admin"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda tidak memiliki akses"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Silahkan input data yang mau di update!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete data car berdasarkan id",
+        "description": "Delete data car berdasarkan id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66238a208a6d00e8554c05d6"
+            },
+            "description": "car id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deletedCar": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66238a148a6d00e8554c05d3"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Nissan"
+                            },
+                            "rentPrice": {
+                              "type": "integer",
+                              "example": 1250000
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/sw8zj3c6b/IMG-1713605136579_vTXQfBJaW.png"
+                            },
+                            "isAvailable": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2024-04-20T09:23:43.192Z"
+                            },
+                            "createdBy": {
+                              "type": "string",
+                              "example": "66238b097344e44ca0276ab1"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2024-04-20T16:47:54.049Z"
+                            }
+                          }
+                        },
+                        "deletedBy": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66238b097344e44ca0276ab1"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Super Admin"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda tidak memiliki akses"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Id yang diinput tidak valid!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Login menggunakan email dan password",
+        "description": "Login menggunakan email dan password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "member@mail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "member"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request (Invalid input)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email / Password tidak ada..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Login Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda berhasil login!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "token_anda_disini"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "API registrasi untuk member",
+        "description": "API registrasi untuk member",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "member@mail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "member"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "member"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Member"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 20
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Malaysia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request (Invalid input)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email sudah digunakan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Tidak ada akses untuk membuat role..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Registration Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Akun berhasil dibuat!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/register": {
+      "post": {
+        "tags": ["Auths"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "API registrasi untuk admin",
+        "description": "API registrasi untuk admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "member@mail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "member"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "member"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Member"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 20
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Malaysia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request (Invalid input)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email sudah digunakan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Tidak ada akses untuk membuat role..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Registration Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Akun berhasil dibuat!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "API untuk melihat list user",
+        "description": "API untuk melihat list user",
+        "responses": {
+          "401": {
+            "description": "No Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda tidak memiliki akses!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Response success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "totalData": {
+                      "type": "integer",
+                      "example": 2
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "age": {
+                                "type": "integer"
+                              },
+                              "address": {
+                                "type": "string"
+                              },
+                              "role": {
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "example": [
+                            {
+                              "_id": "66238b097344e44ca0276ab1",
+                              "name": "Super Admin",
+                              "age": 22,
+                              "address": "Indonesia",
+                              "role": "Super Admin",
+                              "createdAt": "2024-04-20T09:28:37.391Z"
+                            },
+                            {
+                              "_id": "66238b177344e44ca0276ab6",
+                              "name": "Admin",
+                              "age": 25,
+                              "address": "Singapore",
+                              "role": "Admin",
+                              "createdAt": "2024-04-20T09:28:37.391Z"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/current_user": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "API untuk melihat data current user",
+        "description": "API untuk melihat data current user",
+        "responses": {
+          "401": {
+            "description": "No Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token tidak ada..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Response success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "example": "66238b257344e44ca0276abb"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Member"
+                            },
+                            "age": {
+                              "type": "integer",
+                              "example": 19
+                            },
+                            "address": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "Member"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2024-04-20T09:28:37.391Z"
+                            }
+                          }
+                        }
                       }
                     }
                   }
