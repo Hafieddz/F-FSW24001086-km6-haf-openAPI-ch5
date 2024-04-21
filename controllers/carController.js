@@ -1,5 +1,6 @@
 const Car = require("../models/Car");
 const imagekit = require("../lib/imageKit");
+const { default: mongoose } = require("mongoose");
 
 const getCars = async (req, res) => {
   try {
@@ -33,8 +34,6 @@ const getCars = async (req, res) => {
 
 const createCar = async (req, res) => {
   try {
-    if (req.user.role === "Member") throw new Error("Akses tidak diterima...");
-
     const { name, rentPrice } = req.body;
     const file = req.file;
     let image;
@@ -73,8 +72,16 @@ const createCar = async (req, res) => {
 
 const updateCar = async (req, res) => {
   try {
-    if (req.user.role === "Member") throw new Error("Akses tidak diterima...");
     const { id } = req.params;
+    const requestBodyObject = req.body;
+
+    if (Object.keys(requestBodyObject).length === 0) {
+      throw new Error("Silahkan input data yang mau diupdate!");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Id yang diinput tidak valid!");
+    }
 
     const newData = {
       ...req.body,
@@ -105,9 +112,12 @@ const updateCar = async (req, res) => {
 
 const deleteCar = async (req, res) => {
   try {
-    if (req.user.role === "Member") throw new Error("Akses tidak diterima");
     const { id } = req.params;
     const { _id, name } = req.user;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Id yang diinput tidak valid!");
+    }
 
     const deletedCar = await Car.findByIdAndDelete(id);
     const userInfo = { _id, name };
@@ -131,6 +141,11 @@ const deleteCar = async (req, res) => {
 const getCarById = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Id yang diinput tidak valid!");
+    }
 
     const car = await Car.findById(id);
 

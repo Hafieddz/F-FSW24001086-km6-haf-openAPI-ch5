@@ -7,13 +7,13 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    console.log(req.body);
+
     const user = await Auth.findOne({ email }).populate("userId");
     if (!user) throw new Error("Email / Password tidak ada...");
 
     const isPassword = bcrypt.compareSync(password, user.password);
     if (!isPassword) throw new Error("Email / Password tidak ada...");
-
-    console.log(user.userId.id);
 
     const token = jwt.sign(
       {
@@ -30,7 +30,6 @@ const login = async (req, res) => {
       status: "success",
       message: "Anda berhasil login!",
       data: {
-        email,
         token,
       },
     });
@@ -70,7 +69,7 @@ const register = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      message: "Account created successfully!",
+      message: "Akun berhasil dibuat!",
     });
   } catch (error) {
     res.status(400).json({
@@ -82,9 +81,6 @@ const register = async (req, res) => {
 
 const registerAdmin = async (req, res) => {
   try {
-    console.log(req.user);
-    if (req.user.role !== "Super Admin")
-      throw new Error("Akses tidak diterima...");
     const { name, email, password, confirmPassword, age, address } = req.body;
 
     const isUserAvailable = await Auth.findOne({ email });
