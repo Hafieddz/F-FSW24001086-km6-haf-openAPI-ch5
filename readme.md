@@ -59,6 +59,13 @@ $ npm run import-data
 $ npm run delete-data
 ```
 
-## API Documentaion
+## API Routes
 
+##### Auth  : /api/v1/auths
+##### User : /api/v1/users
+##### Car : /api/v1/cars
+
+## API Documentation
+
+##### Route : /api_docs
 API Docs File : [api-docs.json](./docs/api-docs.json)
