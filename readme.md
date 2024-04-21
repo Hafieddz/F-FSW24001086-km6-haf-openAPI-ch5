@@ -59,13 +59,37 @@ $ npm run import-data
 $ npm run delete-data
 ```
 
+## Account Info
+
+```bash
+# Import data terlebih dahulu sebelum login
+Akun Super Admin
+{
+  email : superadmin@mail.com,
+  password : superadmin
+}
+Akun Admin
+{
+  email : admin@mail.com,
+  password : admin
+}
+Akun Member
+{
+  email : member@mail.com,
+  password : member
+}
+```
+
 ## API Routes
 
-##### Auth  : /api/v1/auths
+##### Auth : /api/v1/auths
+
 ##### User : /api/v1/users
+
 ##### Car : /api/v1/cars
 
 ## API Documentation
 
 ##### Route : /api_docs
+
 API Docs File : [api-docs.json](./docs/api-docs.json)
