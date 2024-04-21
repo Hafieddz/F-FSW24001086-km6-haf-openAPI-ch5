@@ -7,7 +7,7 @@ const authorization = async (req, res, next) => {
     const bearerToken = req.headers.authorization;
 
     console.log(bearerToken);
-    if (!bearerToken) throw new Error("Missing token...");
+    if (!bearerToken) throw new Error("Token tidak ada...");
 
     const token = bearerToken.split(" ")[1];
 
@@ -19,7 +19,6 @@ const authorization = async (req, res, next) => {
 
     req.user = user;
 
-    console.log("Continue to the controller");
     next();
   } catch (error) {
     res.status(400).json({
