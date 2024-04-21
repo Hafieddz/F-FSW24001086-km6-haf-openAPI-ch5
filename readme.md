@@ -63,17 +63,20 @@ $ npm run delete-data
 
 ```bash
 # Import data terlebih dahulu sebelum login
-Akun Super Admin
+
+# Akun Super Admin
 {
   email : superadmin@mail.com,
   password : superadmin
 }
-Akun Admin
+
+# Akun Admin
 {
   email : admin@mail.com,
   password : admin
 }
-Akun Member
+
+# Akun Member
 {
   email : member@mail.com,
   password : member
